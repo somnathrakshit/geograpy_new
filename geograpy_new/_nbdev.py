@@ -2,32 +2,38 @@
 
 __all__ = ["index", "modules", "custom_doc_links", "git_url"]
 
-index = {"Extractor": "extraction.ipynb",
-         "Labels": "labels.ipynb",
-         "LocationManager": "locator.ipynb",
-         "CountryManager": "locator.ipynb",
-         "RegionManager": "locator.ipynb",
-         "CityManager": "locator.ipynb",
-         "Earth": "locator.ipynb",
-         "Location": "locator.ipynb",
-         "City": "locator.ipynb",
-         "Region": "locator.ipynb",
-         "Country": "locator.ipynb",
-         "LocationContext": "locator.ipynb",
-         "Locator": "locator.ipynb",
-         "PlaceContext": "places.ipynb",
-         "Download": "utils.ipynb",
-         "Profiler": "utils.ipynb",
-         "remove_non_ascii": "utils.ipynb",
-         "fuzzy_match": "utils.ipynb",
-         "Wikidata": "wikidata.ipynb"}
+index = {"Labels": "001_labels.ipynb",
+         "Extractor": "002_extraction.ipynb",
+         "Download": "003_utils.ipynb",
+         "Profiler": "003_utils.ipynb",
+         "remove_non_ascii": "003_utils.ipynb",
+         "fuzzy_match": "003_utils.ipynb",
+         "Wikidata": "004_wikidata.ipynb",
+         "PlaceContext": "005_places.ipynb",
+         "LocationManager": "006_locator.ipynb",
+         "CountryManager": "006_locator.ipynb",
+         "RegionManager": "006_locator.ipynb",
+         "CityManager": "006_locator.ipynb",
+         "Earth": "006_locator.ipynb",
+         "Location": "006_locator.ipynb",
+         "City": "006_locator.ipynb",
+         "Region": "006_locator.ipynb",
+         "Country": "006_locator.ipynb",
+         "LocationContext": "006_locator.ipynb",
+         "Locator": "006_locator.ipynb",
+         "Geograpy3Test": "100_basetest.ipynb",
+         "TestExtractor": "101_test_extractor.ipynb",
+         "TestLocationHierarchy": "102_test_locator.ipynb"}
 
-modules = ["extraction.py",
-           "labels.py",
-           "locator.py",
-           "places.py",
+modules = ["labels.py",
+           "extraction.py",
            "utils.py",
-           "wikidata.py"]
+           "wikidata.py",
+           "places.py",
+           "locator.py",
+           "basetest.py",
+           "test_extractor.py",
+           "test_locator.py"]
 
 doc_url = "https://somnathrakshit.github.io/geograpy_new/"
 

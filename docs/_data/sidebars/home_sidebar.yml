@@ -10,23 +10,26 @@ entries:
       title: Overview
       url: /
     - output: web,pdf
-      title: geograpy3.extraction
-      url: extraction.html
-    - output: web,pdf
       title: geograpy3.labels
       url: labels.html
     - output: web,pdf
-      title: geograpy3.locator
-      url: locator.html
-    - output: web,pdf
-      title: geograpy3.places
-      url: places.html
+      title: geograpy3.extraction
+      url: extraction.html
     - output: web,pdf
       title: geograpy3.utils
       url: utils.html
     - output: web,pdf
       title: geograpy3.wikidata
       url: wikidata.html
+    - output: web,pdf
+      title: geograpy3.places
+      url: places.html
+    - output: web,pdf
+      title: geograpy3.locator
+      url: locator.html
+    - output: web,pdf
+      title: Title
+      url: test_locator.html
     output: web
     title: geograpy_new
   output: web
