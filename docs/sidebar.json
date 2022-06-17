@@ -1,6 +1,11 @@
 {
   "geograpy_new": {
     "Overview": "/",
-    "geograpy3": "core.html"
+    "geograpy3.extraction": "extraction.html",
+    "geograpy3.labels": "labels.html",
+    "geograpy3.locator": "locator.html",
+    "geograpy3.places": "places.html",
+    "geograpy3.utils": "utils.html",
+    "geograpy3.wikidata": "wikidata.html"
   }
 }

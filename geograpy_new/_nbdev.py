@@ -2,9 +2,32 @@
 
 __all__ = ["index", "modules", "custom_doc_links", "git_url"]
 
-index = {"say_hello": "00_core.ipynb"}
+index = {"Extractor": "extraction.ipynb",
+         "Labels": "labels.ipynb",
+         "LocationManager": "locator.ipynb",
+         "CountryManager": "locator.ipynb",
+         "RegionManager": "locator.ipynb",
+         "CityManager": "locator.ipynb",
+         "Earth": "locator.ipynb",
+         "Location": "locator.ipynb",
+         "City": "locator.ipynb",
+         "Region": "locator.ipynb",
+         "Country": "locator.ipynb",
+         "LocationContext": "locator.ipynb",
+         "Locator": "locator.ipynb",
+         "PlaceContext": "places.ipynb",
+         "Download": "utils.ipynb",
+         "Profiler": "utils.ipynb",
+         "remove_non_ascii": "utils.ipynb",
+         "fuzzy_match": "utils.ipynb",
+         "Wikidata": "wikidata.ipynb"}
 
-modules = ["core.py"]
+modules = ["extraction.py",
+           "labels.py",
+           "locator.py",
+           "places.py",
+           "utils.py",
+           "wikidata.py"]
 
 doc_url = "https://somnathrakshit.github.io/geograpy_new/"
 
