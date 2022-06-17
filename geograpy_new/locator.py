@@ -37,7 +37,8 @@ class LocationManager(EntityManager):
 
     def __init__(self, name:str, entityName:str, entityPluralName:str, listName:str=None, tableName:str=None,clazz=None, primaryKey:str=None, config:StorageConfig=None, handleInvalidListTypes=True, filterInvalidListTypes=False, debug=False):
         '''
-        construct me
+        Constructor
+
         Args:
             name(string): name of this LocationManager
             entityName(string): entityType to be managed e.g. Country

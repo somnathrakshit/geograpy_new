@@ -53,11 +53,13 @@ class Download:
     def downloadBackupFile(url:str, fileName:str, targetDirectory:str, force:bool=False):
         '''
         Downloads from the given url the zip-file and extracts the file corresponding to the given fileName.
+
         Args:
             url: url linking to a downloadable gzip file
             fileName: Name of the file that should be extracted from gzip file
             targetDirectory(str): download the file this directory
             force (bool): True if the download should be forced
+
         Returns:
             Name of the extracted file with path to the backup directory
         '''
@@ -110,9 +112,11 @@ class Profiler:
 def remove_non_ascii(s):
     '''
     Remove non ascii chars from the given string
+
     Args:
         s:
             string: The string to remove chars from
+
     Returns:
         string: The result string with non-ascii chars removed
 
@@ -125,6 +129,7 @@ def fuzzy_match(s1, s2, max_dist=.8):
     '''
     Fuzzy match the given two strings with the given maximum distance
     jellyfish jaro_winkler_similarity based on https://en.wikipedia.org/wiki/Jaro-Winkler_distance
+
     Args:
         s1:
             string: First string
@@ -132,6 +137,7 @@ def fuzzy_match(s1, s2, max_dist=.8):
             string: Second string
         max_dist:
             float: The distance - default: 0.8
+
     Returns:
         True if the match is greater equals max_dist. Otherwise false
     '''

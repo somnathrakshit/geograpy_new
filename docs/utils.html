@@ -70,6 +70,83 @@ nb_path: "utils.ipynb"
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">Download</span><span class="p">:</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Utility functions for downloading data</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">getURLContent</span><span class="p">(</span><span class="n">url</span><span class="p">:</span><span class="nb">str</span><span class="p">):</span>
+        <span class="k">with</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">url</span><span class="p">)</span> <span class="k">as</span> <span class="n">urlResponse</span><span class="p">:</span>
+            <span class="n">content</span> <span class="o">=</span> <span class="n">urlResponse</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">content</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">getFileContent</span><span class="p">(</span><span class="n">path</span><span class="p">:</span><span class="nb">str</span><span class="p">):</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="n">content</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">content</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">needsDownload</span><span class="p">(</span><span class="n">filePath</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span><span class="n">force</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">-&gt;</span><span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        check if a download of the given filePath is necessary that is the file</span>
+<span class="sd">        does not exist has a size of zero or the download should be forced</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            filePath(str): the path of the file to be checked</span>
+<span class="sd">            force(bool): True if the result should be forced to True</span>
+<span class="sd">            </span>
+<span class="sd">        Return:</span>
+<span class="sd">            bool: True if  a download for this file needed</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">filePath</span><span class="p">):</span>
+            <span class="n">result</span><span class="o">=</span><span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">stats</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">stat</span><span class="p">(</span><span class="n">filePath</span><span class="p">)</span>
+            <span class="n">size</span><span class="o">=</span><span class="n">stats</span><span class="o">.</span><span class="n">st_size</span>
+            <span class="n">result</span><span class="o">=</span><span class="n">force</span> <span class="ow">or</span> <span class="n">size</span><span class="o">==</span><span class="mi">0</span>
+        <span class="k">return</span> <span class="n">result</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">downloadBackupFile</span><span class="p">(</span><span class="n">url</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span> <span class="n">fileName</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span> <span class="n">targetDirectory</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span> <span class="n">force</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Downloads from the given url the zip-file and extracts the file corresponding to the given fileName.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            url: url linking to a downloadable gzip file</span>
+<span class="sd">            fileName: Name of the file that should be extracted from gzip file</span>
+<span class="sd">            targetDirectory(str): download the file this directory</span>
+<span class="sd">            force (bool): True if the download should be forced</span>
+<span class="sd">            </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            Name of the extracted file with path to the backup directory</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">extractTo</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">targetDirectory</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">fileName</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="c1"># we might want to check whether a new version is available</span>
+        <span class="k">if</span> <span class="n">Download</span><span class="o">.</span><span class="n">needsDownload</span><span class="p">(</span><span class="n">extractTo</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="n">force</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">targetDirectory</span><span class="p">):</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">targetDirectory</span><span class="p">)</span>
+            <span class="n">zipped</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">extractTo</span><span class="si">}</span><span class="s2">.gz&quot;</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Downloading </span><span class="si">{</span><span class="n">zipped</span><span class="si">}</span><span class="s2"> from </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2"> ... this might take a few seconds&quot;</span><span class="p">)</span>
+            <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlretrieve</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">zipped</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unzipping </span><span class="si">{</span><span class="n">extractTo</span><span class="si">}</span><span class="s2"> from </span><span class="si">{</span><span class="n">zipped</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">with</span> <span class="n">gzip</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">zipped</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">gzipped</span><span class="p">:</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">extractTo</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">unzipped</span><span class="p">:</span>
+                    <span class="n">shutil</span><span class="o">.</span><span class="n">copyfileobj</span><span class="p">(</span><span class="n">gzipped</span><span class="p">,</span> <span class="n">unzipped</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Extracting completed&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">extractTo</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="p">(</span><span class="sa">f</span><span class="s2">&quot;could not extract </span><span class="si">{</span><span class="n">fileName</span><span class="si">}</span><span class="s2"> from </span><span class="si">{</span><span class="n">zipped</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">extractTo</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 </div>
     {% endraw %}
@@ -85,7 +162,7 @@ nb_path: "utils.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="Profiler" class="doc_header"><code>class</code> <code>Profiler</code><a href="https://github.com/somnathrakshit/geograpy_new/tree/master/geograpy_new/utils.py#L82" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>Profiler</code>(<strong><code>msg</code></strong>, <strong><code>profile</code></strong>=<em><code>True</code></em>)</p>
+<h2 id="Profiler" class="doc_header"><code>class</code> <code>Profiler</code><a href="https://github.com/somnathrakshit/geograpy_new/tree/master/geograpy_new/utils.py#L84" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>Profiler</code>(<strong><code>msg</code></strong>, <strong><code>profile</code></strong>=<em><code>True</code></em>)</p>
 </blockquote>
 <p>simple profiler</p>
 
@@ -102,6 +179,41 @@ nb_path: "utils.ipynb"
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">Profiler</span><span class="p">:</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    simple profiler</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">msg</span><span class="p">,</span><span class="n">profile</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        construct me with the given msg and profile active flag</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            msg(str): the message to show if profiling is active</span>
+<span class="sd">            profile(bool): True if messages should be shown</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">msg</span><span class="o">=</span><span class="n">msg</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">profile</span><span class="o">=</span><span class="n">profile</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">starttime</span><span class="o">=</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">profile</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Starting </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2"> ...&quot;</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">extraMsg</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        time the action and print if profile is active</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">elapsed</span><span class="o">=</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">starttime</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">profile</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">msg</span><span class="si">}{</span><span class="n">extraMsg</span><span class="si">}</span><span class="s2"> took </span><span class="si">{</span><span class="n">elapsed</span><span class="si">:</span><span class="s2">5.1f</span><span class="si">}</span><span class="s2"> s&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">elapsed</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 </div>
     {% endraw %}
@@ -117,13 +229,13 @@ nb_path: "utils.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="remove_non_ascii" class="doc_header"><code>remove_non_ascii</code><a href="https://github.com/somnathrakshit/geograpy_new/tree/master/geograpy_new/utils.py#L110" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>remove_non_ascii</code>(<strong><code>s</code></strong>)</p>
+<h4 id="remove_non_ascii" class="doc_header"><code>remove_non_ascii</code><a href="https://github.com/somnathrakshit/geograpy_new/tree/master/geograpy_new/utils.py#L112" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>remove_non_ascii</code>(<strong><code>s</code></strong>)</p>
 </blockquote>
-<p>Remove non ascii chars from the given string
-Args:
+<p>Remove non ascii chars from the given string</p>
+<p>Args:
     s:
-        string: The string to remove chars from
-Returns:
+        string: The string to remove chars from</p>
+<p>Returns:
     string: The result string with non-ascii chars removed</p>
 <p>Hat tip: <a href="http://stackoverflow.com/a/1342373/2367526">http://stackoverflow.com/a/1342373/2367526</a></p>
 
@@ -140,6 +252,29 @@ Returns:
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">remove_non_ascii</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; </span>
+<span class="sd">    Remove non ascii chars from the given string </span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        s: </span>
+<span class="sd">            string: The string to remove chars from </span>
+<span class="sd">            </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        string: The result string with non-ascii chars removed </span>
+<span class="sd">        </span>
+<span class="sd">    Hat tip: http://stackoverflow.com/a/1342373/2367526    </span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">s</span> <span class="k">if</span> <span class="nb">ord</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">128</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 </div>
     {% endraw %}
@@ -155,18 +290,18 @@ Returns:
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="fuzzy_match" class="doc_header"><code>fuzzy_match</code><a href="https://github.com/somnathrakshit/geograpy_new/tree/master/geograpy_new/utils.py#L124" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>fuzzy_match</code>(<strong><code>s1</code></strong>, <strong><code>s2</code></strong>, <strong><code>max_dist</code></strong>=<em><code>0.8</code></em>)</p>
+<h4 id="fuzzy_match" class="doc_header"><code>fuzzy_match</code><a href="https://github.com/somnathrakshit/geograpy_new/tree/master/geograpy_new/utils.py#L128" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>fuzzy_match</code>(<strong><code>s1</code></strong>, <strong><code>s2</code></strong>, <strong><code>max_dist</code></strong>=<em><code>0.8</code></em>)</p>
 </blockquote>
 <p>Fuzzy match the given two strings with the given maximum distance
-jellyfish jaro_winkler_similarity based on <a href="https://en.wikipedia.org/wiki/Jaro-Winkler_distance">https://en.wikipedia.org/wiki/Jaro-Winkler_distance</a>
-Args:
+jellyfish jaro_winkler_similarity based on <a href="https://en.wikipedia.org/wiki/Jaro-Winkler_distance">https://en.wikipedia.org/wiki/Jaro-Winkler_distance</a></p>
+<p>Args:
     s1:
         string: First string
     s2:
         string: Second string
     max_dist:
-        float: The distance - default: 0.8
-Returns:
+        float: The distance - default: 0.8</p>
+<p>Returns:
     True if the match is greater equals max_dist. Otherwise false</p>
 
 </div>
@@ -182,6 +317,32 @@ Returns:
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">fuzzy_match</span><span class="p">(</span><span class="n">s1</span><span class="p">,</span> <span class="n">s2</span><span class="p">,</span> <span class="n">max_dist</span><span class="o">=</span><span class="mf">.8</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; </span>
+<span class="sd">    Fuzzy match the given two strings with the given maximum distance</span>
+<span class="sd">    jellyfish jaro_winkler_similarity based on https://en.wikipedia.org/wiki/Jaro-Winkler_distance</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        s1: </span>
+<span class="sd">            string: First string </span>
+<span class="sd">        s2: </span>
+<span class="sd">            string: Second string </span>
+<span class="sd">        max_dist: </span>
+<span class="sd">            float: The distance - default: 0.8 </span>
+<span class="sd">            </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        True if the match is greater equals max_dist. Otherwise false</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="n">jellyfish</span><span class="o">.</span><span class="n">jaro_winkler_similarity</span><span class="p">(</span><span class="n">s1</span><span class="p">,</span> <span class="n">s2</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">max_dist</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 </div>
     {% endraw %}

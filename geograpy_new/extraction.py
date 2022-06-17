@@ -75,9 +75,11 @@ class Extractor(object):
     def find_entities(self,labels=Labels.default):
         '''
         Find entities with the given labels set self.places and returns it
+
         Args:
             labels:
                 Labels: The labels to filter
+
         Returns:
             list:
                 List of places

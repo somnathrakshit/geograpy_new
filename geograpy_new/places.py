@@ -45,9 +45,9 @@ class PlaceContext(Locator):
         '''
         regions = []
         queryString="""SELECT r.*  FROM
-COUNTRIES c
-JOIN regions r ON r.countryId=c.wikidataid
-WHERE c.name=(?)"""
+            COUNTRIES c
+            JOIN regions r ON r.countryId=c.wikidataid
+            WHERE c.name=(?)"""
         params=(countryName,)
         regionRecords=self.sqlDB.query(queryString, params)
         for regionRecord in regionRecords:
